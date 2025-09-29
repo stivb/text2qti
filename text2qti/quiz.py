@@ -38,7 +38,7 @@ start_patterns = {
     'mctf_correct_choice': r'\*[a-zA-Z]\)',
     'mctf_incorrect_choice': r'[a-zA-Z]\)',
     'multans_correct_choice': r'\[\*\]',
-    'multans_incorrect_choice': r'\[ ?\]',
+    'multans_incorrect_choice': r'\[ \]',
     'shortans_correct_choice': r'\*',
     'feedback': r'\.\.\.',
     'correct_feedback': r'\+',
@@ -86,23 +86,23 @@ multi_line = set([x for x in start_patterns
                   if x not in no_content and x not in single_line])
 # whether parser needs to check for multi-paragraph content
 multi_para = set([x for x in multi_line if 'title' not in x])
-start_re = re.compile('|'.join(r'(?P<{0}>{1}[ \t]+(?=\S))'.format(name, pattern)
+start_re = re.compile('|'.join(r'(P<{0}>{1}[ \t]+(=\S))'.format(name, pattern)
                                if name not in no_content else
-                               r'(?P<{0}>{1}\s*)$'.format(name, pattern)
+                               r'(P<{0}>{1}\s*)$'.format(name, pattern)
                                for name, pattern in start_patterns.items()))
-start_missing_content_re = re.compile('|'.join(r'(?P<{0}>{1}[ \t]*$)'.format(name, pattern)
+start_missing_content_re = re.compile('|'.join(r'(P<{0}>{1}[ \t]*$)'.format(name, pattern)
                                                for name, pattern in start_patterns.items()
                                                if name not in no_content))
-start_missing_whitespace_re = re.compile('|'.join(r'(?P<{0}>{1}(?=\S))'.format(name, pattern)
+start_missing_whitespace_re = re.compile('|'.join(r'(P<{0}>{1}(=\S))'.format(name, pattern)
                                                   for name, pattern in start_patterns.items()
                                                   if name not in no_content))
 start_code_supported_info_re = re.compile(r'\{\s*'
-                                          r'\.(?P<lang>[a-zA-Z](?:[a-zA-Z0-9]+|[\._\-]+[a-zA-Z0-9]+)*)'
+                                          r'\.(P<lang>[a-zA-Z](:[a-zA-Z0-9]+|[\._\-]+[a-zA-Z0-9]+)*)'
                                           r'\s+'
                                           r'\.run'
-                                          r'(?:\s+executable=(?P<executable>[~\w/\.\-]+|"[^\\\"\']+"))?'
+                                          r'(:\s+executable=(P<executable>[~\w/\.\-]+|"[^\\\"\']+"))'
                                           r'\s*\}$')
-int_re = re.compile('(?:0|[+-]?[1-9](?:[0-9]+|_[0-9]+)*)$')
+int_re = re.compile('(:0|[+-][1-9](:[0-9]+|_[0-9]+)*)$')
 
 
 
@@ -797,7 +797,7 @@ class Quiz(object):
                                       stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE,
                                       startupinfo=startupinfo)
             except FileNotFoundError as e:
-                raise Text2qtiError(f'Failed to execute code (missing executable "{executable}"?):\n{e}')
+                raise Text2qtiError(f'Failed to execute code (missing executable "{executable}"):\n{e}')
             except Exception as e:
                 raise Text2qtiError(f'Failed to execute code with command "{cmd}":\n{e}')
         # Use io to handle output as if read from a file in terms of newline

@@ -28,9 +28,9 @@ ID_PATTERN = rf'#{IDENTIFIER_PATTERN}'
 CLASS_PATTERN = rf'\.{IDENTIFIER_PATTERN}'
 KV_PATTERN = rf'{IDENTIFIER_PATTERN}=[0-9A-Za-z_\-%]+'
 ATTR_PATTERN = (
-    r'\{[ ]*(?!\})('
-    rf'(?:{ID_PATTERN}(?=[ \}}]))?'
-    rf'(?:{CLASS_PATTERN}(?=[ \}}])|{KV_PATTERN}(?=[ \}}])|[ ]+(?=[^ \}}]))*'
+    r'\{[ ]*(!\})('
+    rf'(:{ID_PATTERN}(=[ \}}]))'
+    rf'(:{CLASS_PATTERN}(=[ \}}])|{KV_PATTERN}(=[ \}}])|[ ]+(=[^ \}}]))*'
     r')[ ]*\}'
 )
 

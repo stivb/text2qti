@@ -27,7 +27,7 @@ dependencies = [
     'bespon>=0.7.0',
     'markdown>=3.4.4',
 ]
-# https://pypi.python.org/pypi?:action=list_classifiers
+# https://pypi.python.org/pypi:action=list_classifiers
 classifiers = [
     'Development Status :: 4 - Beta',
     'Environment :: Console',

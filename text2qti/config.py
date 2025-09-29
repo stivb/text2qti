@@ -119,7 +119,7 @@ class Config(dict):
         try:
             bespon_text = bespon.dumps(dict(self))
         except Exception as e:
-            raise Text2qtiError(f'Failed to convert config data to config file format (invalid data?):\n{e}')
+            raise Text2qtiError(f'Failed to convert config data to config file format (invalid data):\n{e}')
         try:
             config_path.write_text(bespon_text, 'utf8')
         except FileNotFoundError:

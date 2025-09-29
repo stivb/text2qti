@@ -101,7 +101,7 @@ _latex_templates = {
     'shortans_placeholder': r'\texttoqtishortansbox',
     'essay_placeholder': r'\texttoqtiessayansbox',
     'file_upload_placeholder': r'\framebox{\texttt{<file upload>}}',
-    'random_questions_start': r'\begingroup\renewcommand{\labelitemi}{[?]}',
+    'random_questions_start': r'\begingroup\renewcommand{\labelitemi}{[]}',
     'random_questions_end': r'\endgroup',
 }
 
@@ -117,7 +117,7 @@ _html_templates = {
             margin-left: -0.5em;
         }
         div.text2qti-randomized > ul > li {
-            list-style-type: "[?]";
+            list-style-type: "[]";
             padding-left: 0.5em;
         }
         ul.text2qti {

@@ -237,7 +237,7 @@ class Markdown(object):
         return string
 
 
-    CANVAS_EQUATION_TEMPLATE = '<img class="equation_image" title="{latex_xml_escaped}" src="{latex_render_url}/{latex_url_escaped}?scale=1" alt="LaTeX: {latex_xml_escaped}" data-equation-content="{latex_xml_escaped}" data-ignore-a11y-check="" >'
+    CANVAS_EQUATION_TEMPLATE = '<img class="equation_image" title="{latex_xml_escaped}" src="{latex_render_url}/{latex_url_escaped}scale=1" alt="LaTeX: {latex_xml_escaped}" data-equation-content="{latex_xml_escaped}" data-ignore-a11y-check="" >'
 
     def latex_to_canvas_img(self, latex: str) -> str:
         '''
@@ -299,7 +299,7 @@ class Markdown(object):
         return mathml
 
 
-    siunitx_num_number_re = re.compile(r'[+-]?(?:0|(?:[1-9][0-9]*(?:\.[0-9]+)?|0?\.[0-9]+)(?:[eE][+-]?(?:[1-9][0-9]*|0+[1-9][0-9]*))?)$')
+    siunitx_num_number_re = re.compile(r'[+-](:0|(:[1-9][0-9]*(:\.[0-9]+)|0\.[0-9]+)(:[eE][+-](:[1-9][0-9]*|0+[1-9][0-9]*)))$')
 
     def siunitx_num_to_plain_latex(self, number: str, in_math: bool=False) -> str:
         r'''
@@ -408,9 +408,9 @@ class Markdown(object):
         return self.latex_to_qti(latex)
 
 
-    siunitx_num_macro_pattern = r'\\num\{(?P<num_number>[^{}]+)\}'
-    siunitx_si_macro_pattern = r'\\si\{(?P<si_unit>[^{}]+)\}'
-    siunitx_SI_macro_pattern = r'\\SI\{(?P<SI_number>[^{}]+)\}\{(?P<SI_unit>[^{}]+)\}'
+    siunitx_num_macro_pattern = r'\\num\{(P<num_number>[^{}]+)\}'
+    siunitx_si_macro_pattern = r'\\si\{(P<si_unit>[^{}]+)\}'
+    siunitx_SI_macro_pattern = r'\\SI\{(P<SI_number>[^{}]+)\}\{(P<SI_unit>[^{}]+)\}'
     siunitx_latex_macros_pattern = '|'.join([siunitx_num_macro_pattern, siunitx_si_macro_pattern, siunitx_SI_macro_pattern])
     siunitx_latex_macros_re = re.compile(siunitx_latex_macros_pattern)
 
@@ -436,27 +436,27 @@ class Markdown(object):
         return self.siunitx_latex_macros_re.sub(lambda match: self._siunitx_dispatch(match, in_math), string)
 
 
-    escape = r'(?P<escape>\\\$)'
-    skip = r'(?P<skip>\\.|\\\n|\$\$+(?!\$))'
-    html_comment_pattern = r'(?P<html_comment><!--(?:.|\n)*?-->)'
+    escape = r'(P<escape>\\\$)'
+    skip = r'(P<skip>\\.|\\\n|\$\$+(!\$))'
+    html_comment_pattern = r'(P<html_comment><!--(:.|\n)*-->)'
     block_code_pattern = (
-        r'^(?P<block_code>'
-        r'(?P<indent>[ \t]*)(?P<block_code_delim>```+(?!`)|~~~+(?!~)).*?\n'
-        r'(?:[ \t]*\n|(?P=indent).*\n)*?'
-        r'(?P=indent)(?P=block_code_delim)[ \t]*(?:\n|$)'
+        r'^(P<block_code>'
+        r'(P<indent>[ \t]*)(P<block_code_delim>```+(!`)|~~~+(!~)).*\n'
+        r'(:[ \t]*\n|(P=indent).*\n)*'
+        r'(P=indent)(P=block_code_delim)[ \t]*(:\n|$)'
         r')'
     )
     inline_code_pattern = (
-        r'(?P<inline_code>'
-        r'(?P<inline_code_delim>`+(?!`))'
-        r'(?:.|\n[ \t]*(?![ \t\n]))+?'
-        r'(?<!`)(?P=inline_code_delim)(?!`)'
+        r'(P<inline_code>'
+        r'(P<inline_code_delim>`+(!`))'
+        r'(:.|\n[ \t]*(![ \t\n]))+'
+        r'(<!`)(P=inline_code_delim)(!`)'
         r')'
     )
     inline_math_pattern = (
-        r'\$(?=[^ \t\n])'
-        r'(?P<math>(?:[^$\n\\]|\\.|\\?\n[ \t]*(?:[^ \t\n$]))+)'
-        r'(?<![ \t\n])\$(?!\$)'
+        r'\$(=[^ \t\n])'
+        r'(P<math>(:[^$\n\\]|\\.|\\\n[ \t]*(:[^ \t\n$]))+)'
+        r'(<![ \t\n])\$(!\$)'
     )
     patterns = '|'.join([
         block_code_pattern,

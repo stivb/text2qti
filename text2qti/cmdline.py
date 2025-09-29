@@ -59,7 +59,7 @@ def main():
     if not config.loaded_config_file and sys.stdout.isatty() and sys.stdin.isatty():
         latex_render_url = input(textwrap.dedent('''\
             It looks like text2qti has not been installed on this machine
-            before.  Would you like to set a custom LaTeX rendering URL?  This
+            before.  Would you like to set a custom LaTeX rendering URL  This
             should typically not be necessary with recent version of Canvas.
             If no, press ENTER to use the default ("/equation_images/").  If
             yes, provide the URL and press ENTER.

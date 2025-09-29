@@ -19,7 +19,7 @@ text2qti allows quick and efficient quiz creation.  Example
 then imported by Canvas:
 
 ```
-1.  What is 2+3?
+1.  What is 2+3
 a)  6
 b)  1
 *c) 5
@@ -47,7 +47,7 @@ Quiz description: Checking addition.
 
 Title: An addition question
 Points: 2
-1.  What is 2+3?
+1.  What is 2+3
 ... General question feedback.
 +   Feedback for correct answer.
 -   Feedback for incorrect answer.
@@ -63,7 +63,7 @@ b)  1
 `[*]` for correct answers.
 
 ```
-1.  Which of the following are dinosaurs?
+1.  Which of the following are dinosaurs
 [ ] Woolly mammoth
 [*] Tyrannosaurus rex
 [*] Triceratops
@@ -85,13 +85,13 @@ have the limitation that the absolute value of the smallest acceptable answer
 must be greater than or equal to 0.0001 (1e-4).
 
 ```
-1.  What is the square root of 2?
+1.  What is the square root of 2
 =   1.4142 +- 0.0001
 
-2.  What is the cube root of 2?
+2.  What is the cube root of 2
 =   [1.2598, 1.2600]
 
-3.  What is 2+3?
+3.  What is 2+3
 =   5
 ```
 
@@ -100,7 +100,7 @@ or more spaces or tabs followed by an answer.  Multiple acceptable answers can
 be given.  Answers are restricted to a single line each and are treated as
 plain text, not Markdown.
 ```
-1.  Who lives at the North Pole?
+1.  Who lives at the North Pole
 *   Santa
 *   Santa Claus
 *   Father Christmas
@@ -361,7 +361,7 @@ stdout.
 import textwrap
 for x in [2, 3]:
     print(textwrap.dedent(rf"""
-        1.  What is ${x}\times 5$?
+        1.  What is ${x}\times 5$
         *a) ${x*5}$
         b)  ${x+1}$
         """))
